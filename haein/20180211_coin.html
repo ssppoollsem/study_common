@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>      
+        <script>
+            $(document).ready(function(){                         
+                $("#coin_btn p").click(function(){
+                    var input_moneny = $('#input_moneny input').val();
+                    var id = $(this).attr('id');
+                    reset();
+                    input(id,input_moneny);
+                });
+                
+            });
+
+            function reset(){ // 기존값 리셋
+                $('#output span').text("");
+            }
+
+            function input(id,input) { // 어떤 버튼을 클릭했냐에 따라 실행함수 변경
+                switch (id) {
+                    case 'coin_500': exchange_500(input);                            
+                        break;
+                    case 'coin_100': exchange_100(input);                            
+                        break;
+                }
+            }
+
+            function exchange_500(input){  //5550원
+                var output="";
+                var chrage = input%500;
+                console.log("1."+chrage);// 500으로 나눈 나머지가 0이면 500원짜리로 변경 가능
+
+                if(input >= 500 && input <= 10000 ){ // 압력값이 만원이하이며 500원이상인 것만 가능한 조건
+                    output = "500X"+Math.floor(input/500); // 500으로 나눈 몫 = 동전갯수
+                    console.log("2."+chrage)
+
+                        if(chrage != 0 && chrage >= 100){ //500원으로 교환 불가능한 100원은 그래로 나오도록 하는 조건문
+                            output += ",100X"+Math.floor(chrage/100); // 100으로 나눈 몫 = 동전갯수
+                            console.log("3."+chrage)
+                        }else if ( chrage != 0 && chrage < 100){ // 10원단위 처리 조건문
+                            console.log("4."+chrage)
+                            alert("100원단위로 넣어주세요");
+                            return false; // span에 텍스트 입력이 되면 안되니까 함수 종료
+                        }
+                    $('#output span').text(output); 
+                }else{
+                    alert("500원이상 만원이하만 가능합니다.");   
+                }    
+                
+            }
+
+            function exchange_100(input){
+                var output="";
+                var chrage = input%100;
+                console.log("1-1."+chrage);// 100으로 나눈 나머지가 0 이면 100원으로 변경가능
+
+                if(chrage == 0 && input <= 1000){ // 압력값이 만원이하이며 100원으로 나눠떨어지는 조건
+                    output = "100X"+Math.floor(input/100); // 100으로 나눈 몫 = 동전갯수
+                    console.log("2-2."+chrage)
+                    $('#output span').text(output); 
+                }else {
+                    if(input > 1000){
+                        alert("천원이하만 가능합니다."); 
+                    }else if(chrage != 0){
+                        alert("100원단위로 넣어주세요");
+                    }
+                }    
+            }
+
+
+        </script>
+        <style>
+            label {
+                display:block;
+            }
+            input {
+              height:30px;  
+              border-radius:3px;
+              border: solid 1px #ebebec;
+              padding-left:10px;
+              margin:20px 0;
+            }
+            #wrap {
+                overflow:hidden;
+                width:700px;
+                margin:300px auto;
+            }
+            #wrap > div {
+                float:left;
+                width:50%;
+                padding:10px 0; 
+            }
+            #coin_btn p {
+                float:left;
+                width: 28%;
+                margin-right:10px;
+                padding:5px 20px;
+                background-color: #f8536b;
+                border: solid 1px #f8536b;
+                border-radius:3px;
+                color: #fcf9f9;
+                text-align:center;
+                cursor: pointer;
+            }
+            #output {
+                clear: both;
+            }
+            #output span {
+                display:block;
+                min-width:100px;
+                height:25px;  
+                line-height: 28px;
+                padding:5px 20px;
+                border: solid 1px #f8536b;
+                border-radius:3px;
+            }
+        
+        </style>
+    </head>
+    <body>  
+        <div id="wrap">
+            <div id="coin_exchange">
+                <div id="input_moneny">
+                    <label>돈 넣는 곳</label>
+                    <input type="number" placeholder="돈 입력"/>
+                </div>
+                <div id="coin_btn">
+                    <p id="coin_500">500원 교환기</p>
+                    <p id="coin_100">100원 교환기</p>
+                </div>
+                <div id="output">
+                    <p>돈 나오는 곳</p>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>
